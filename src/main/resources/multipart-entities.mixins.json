@@ -5,7 +5,9 @@
   "compatibilityLevel": "JAVA_16",
   "mixins": [
     "EnderDragonEntityMixin",
-    "EnderDragonPartEntityMixin"
+    "EnderDragonPartEntityMixin",
+    "ServerEntityHandlerMixin",
+    "ServerWorldMixin"
   ],
   "client": [
     "EntityRenderDispatcherMixin"
