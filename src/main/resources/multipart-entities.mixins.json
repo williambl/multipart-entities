@@ -6,7 +6,7 @@
   "mixins": [
   ],
   "client": [
-    "ExampleMixin"
+    "com.williambl.multipartentities.mixin.ExampleMixin"
   ],
   "injectors": {
     "defaultRequire": 1
