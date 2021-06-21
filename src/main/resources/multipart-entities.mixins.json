@@ -9,6 +9,7 @@
     "PlayerEntityMixin",
     "ServerEntityHandlerMixin",
     "ServerWorldMixin",
+    "ThreadedAnvilChunkStorageMixin",
     "WorldMixin"
   ],
   "client": [
