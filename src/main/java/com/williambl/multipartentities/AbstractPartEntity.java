@@ -22,6 +22,20 @@ package com.williambl.multipartentities;
 import net.minecraft.entity.Entity;
 import net.minecraft.network.Packet;
 
-public interface PartEntity<T extends Entity> {
-    T getParent();
+public abstract class AbstractPartEntity<T extends Entity> extends Entity {
+    private final T parent;
+
+    public AbstractPartEntity(T parent) {
+        super(parent.getType(), parent.world);
+        this.parent = parent;
+    }
+
+    public T getParent() {
+        return parent;
+    }
+
+    @Override
+    public Packet<?> createSpawnPacket() {
+        throw new UnsupportedOperationException();
+    }
 }
