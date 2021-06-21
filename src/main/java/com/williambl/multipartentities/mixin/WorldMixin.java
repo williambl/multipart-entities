@@ -31,7 +31,7 @@ public class WorldMixin {
 
 
     @Inject(method = "method_31593", at=@At(value = "CONSTANT", args = "classValue=net/minecraft/entity/boss/dragon/EnderDragonEntity", ordinal = 0))
-    private static void multipartentities$getOtherEntitiesParts(Entity except, Predicate<? super Entity> predicate, List<Entity> list, Entity entity2) {
+    private static void multipartentities$getOtherEntitiesParts(Entity except, Predicate<? super Entity> predicate, List<Entity> list, Entity entity2, CallbackInfo ci) {
         if (entity2 instanceof MultipartEntity mpE) {
             PartEntity<?>[] var11 = mpE.getParts();
 
@@ -52,7 +52,7 @@ public class WorldMixin {
 
 
     @Inject(method = "method_31596", at=@At(value = "CONSTANT", args = "classValue=net/minecraft/entity/boss/dragon/EnderDragonEntity", ordinal = 0))
-    private static <T extends Entity> void multipartentities$getEntitiesByTypeParts(Predicate<? super Entity> predicate, List<Entity> list, TypeFilter<Entity, T> typeFilter, Entity entity) {
+    private static <T extends Entity> void multipartentities$getEntitiesByTypeParts(Predicate<? super Entity> predicate, List<Entity> list, TypeFilter<Entity, T> typeFilter, Entity entity, CallbackInfo ci) {
         if (entity instanceof MultipartEntity mpE) {
             PartEntity<?>[] var11 = mpE.getParts();
 
