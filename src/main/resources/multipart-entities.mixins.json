@@ -6,6 +6,7 @@
   "mixins": [
     "EnderDragonEntityMixin",
     "EnderDragonPartEntityMixin",
+    "EntityMixin",
     "PlayerEntityMixin",
     "ServerEntityHandlerMixin",
     "ServerWorldMixin",
