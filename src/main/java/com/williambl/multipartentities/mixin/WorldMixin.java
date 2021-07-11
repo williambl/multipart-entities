@@ -22,6 +22,7 @@ import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Group;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -36,43 +37,99 @@ import java.util.stream.Stream;
 @SuppressWarnings("UnresolvedMixinReference")
 @Mixin(World.class)
 public abstract class WorldMixin implements WorldAccess, AutoCloseable {
-    @Shadow protected abstract EntityLookup<Entity> getEntityLookup();
-    //FIXME: THIS REALLY SHOULD MIXIN TO THE LAMBDAS BUT THAT DOESN'T WORK
+    @Group(name = "multipartentities$cancelGetOtherEntitiesParts")
+    @Redirect(method = "method_31593", at=@At(value = "CONSTANT", args = "classValue=net/minecraft/entity/boss/dragon/EnderDragonEntity", ordinal = 0))
+    private static boolean multipartentities$cancelGetOtherEntitiesParts$dev(Object targetObject, Class<?> classValue) {
+        return false;
+    }
 
-    @Inject(method = "getOtherEntities", at=@At(value = "RETURN"))
-    private void multipartentities$getOtherEntitiesParts(Entity except, Box box, Predicate<? super Entity> predicate, CallbackInfoReturnable<List<Entity>> cir) {
-        getEntityLookup().forEachIntersects(box, (entity2) -> {
-            if (entity2 instanceof MultipartEntity mpE && !(entity2 instanceof EnderDragonEntity)) {
-                PartEntity<?>[] var11 = mpE.getParts();
+    @Group(name = "multipartentities$cancelGetOtherEntitiesParts")
+    @Redirect(method = "method_31593", at=@At(value = "CONSTANT", args = "classValue=net/minecraft/class_1510", ordinal = 0))
+    private static boolean multipartentities$cancelGetOtherEntitiesParts$prod(Object targetObject, Class<?> classValue) {
+        return false;
+    }
 
-                for (PartEntity<?> part : var11) {
-                    if (part instanceof Entity partE) {
-                        if (entity2 != except && predicate.test(partE)) {
-                            cir.getReturnValue().add(partE);
-                        }
+
+    @Group(name = "multipartentities$getOtherEntitiesParts")
+    @Inject(method = "method_31593", at=@At(value = "CONSTANT", args = "classValue=net/minecraft/entity/boss/dragon/EnderDragonEntity", ordinal = 0))
+    private static void multipartentities$getOtherEntitiesParts$dev(Entity except, Predicate<? super Entity> predicate, List<Entity> list, Entity entity2, CallbackInfo ci) {
+        if (entity2 instanceof MultipartEntity mpE) {
+            PartEntity<?>[] var11 = mpE.getParts();
+
+            for (PartEntity<?> part : var11) {
+                if (part instanceof Entity partE) {
+                    if (entity2 != except && predicate.test(partE)) {
+                        list.add(partE);
                     }
                 }
             }
-        });
+        }
     }
 
-    @Inject(method = "getEntitiesByType", at=@At(value = "RETURN"))
-    private <T extends Entity> void multipartentities$getEntitiesByTypeParts(TypeFilter<Entity, T> filter, Box box, Predicate<? super T> predicate, CallbackInfoReturnable<List<T>> cir) {
-        this.getEntityLookup().forEachIntersects(filter, box, (entity) -> {
-            if (entity instanceof MultipartEntity mpE && !(entity instanceof EnderDragonEntity)) {
-                PartEntity<?>[] var11 = mpE.getParts();
+    @Group(name = "multipartentities$getOtherEntitiesParts")
+    @Inject(method = "method_31593", at=@At(value = "CONSTANT", args = "classValue=net/minecraft/class_1510", ordinal = 0))
+    private static void multipartentities$getOtherEntitiesParts$prod(Entity except, Predicate<? super Entity> predicate, List<Entity> list, Entity entity2, CallbackInfo ci) {
+        if (entity2 instanceof MultipartEntity mpE) {
+            PartEntity<?>[] var11 = mpE.getParts();
 
-                for (PartEntity<?> part : var11) {
-                    if (part instanceof Entity partE) {
-                        T entity2 = filter.downcast(partE);
-                        if (entity2 != null && predicate.test(entity2)) {
-                            cir.getReturnValue().add(entity2);
-                        }
+            for (PartEntity<?> part : var11) {
+                if (part instanceof Entity partE) {
+                    if (entity2 != except && predicate.test(partE)) {
+                        list.add(partE);
                     }
                 }
             }
-        });
+        }
     }
+
+
+    @Group(name = "multipartentities$cancelGetEntitiesByTypeParts")
+    @Redirect(method = "method_31596", at=@At(value = "CONSTANT", args = "classValue=net/minecraft/entity/boss/dragon/EnderDragonEntity", ordinal = 0))
+    private static boolean multipartentities$cancelGetEntitiesByTypeParts$dev(Object targetObject, Class<?> classValue) {
+        return false;
+    }
+
+    @Group(name = "multipartentities$cancelGetEntitiesByTypeParts")
+    @Redirect(method = "method_31596", at=@At(value = "CONSTANT", args = "classValue=net/minecraft/class_1510", ordinal = 0))
+    private static boolean multipartentities$cancelGetEntitiesByTypeParts$prod(Object targetObject, Class<?> classValue) {
+        return false;
+    }
+
+
+    @Group(name = "multipartentities$getEntitiesByTypeParts")
+    @Inject(method = "method_31596", at=@At(value = "CONSTANT", args = "classValue=net/minecraft/entity/boss/dragon/EnderDragonEntity", ordinal = 0))
+    private static <T extends Entity> void multipartentities$getEntitiesByTypeParts$dev(Predicate<? super Entity> predicate, List<Entity> list, TypeFilter<Entity, T> typeFilter, Entity entity, CallbackInfo ci) {
+        if (entity instanceof MultipartEntity mpE) {
+            PartEntity<?>[] var11 = mpE.getParts();
+
+            for (PartEntity<?> part : var11) {
+                if (part instanceof Entity partE) {
+                    T entity2 = typeFilter.downcast(partE);
+                    if (entity2 != null && predicate.test(entity2)) {
+                        list.add(entity2);
+                    }
+                }
+            }
+        }
+    }
+
+    @Group(name = "multipartentities$getEntitiesByTypeParts")
+    @Inject(method = "method_31596", at=@At(value = "CONSTANT", args = "classValue=net/minecraft/class_1510", ordinal = 0))
+    private static <T extends Entity> void multipartentities$getEntitiesByTypeParts$prod(Predicate<? super Entity> predicate, List<Entity> list, TypeFilter<Entity, T> typeFilter, Entity entity, CallbackInfo ci) {
+        if (entity instanceof MultipartEntity mpE) {
+            PartEntity<?>[] var11 = mpE.getParts();
+
+            for (PartEntity<?> part : var11) {
+                if (part instanceof Entity partE) {
+                    T entity2 = typeFilter.downcast(partE);
+                    if (entity2 != null && predicate.test(entity2)) {
+                        list.add(entity2);
+                    }
+                }
+            }
+        }
+    }
+
 
     @Override
     public Stream<VoxelShape> getEntityCollisions(@Nullable Entity entity, Box box, Predicate<Entity> predicate) {

@@ -13,14 +13,23 @@ import net.minecraft.util.math.MathHelper;
 import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Group;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(EntityRenderDispatcher.class)
 public class EntityRenderDispatcherMixin {
+
+    @Group(name = "multipartentities$cancelRenderHitbox")
     @Redirect(method = "renderHitbox", at=@At(value = "CONSTANT", args = "classValue=net/minecraft/entity/boss/dragon/EnderDragonEntity", ordinal = 0))
-    private static boolean multipartentities$cancelRenderHitbox(Object targetObject, Class<?> classValue) {
+    private static boolean multipartentities$cancelRenderHitbox$dev(Object targetObject, Class<?> classValue) {
+        return false;
+    }
+
+    @Group(name = "multipartentities$cancelRenderHitbox")
+    @Redirect(method = "renderHitbox", at=@At(value = "CONSTANT", args = "classValue=net/minecraft/class_1510", ordinal = 0))
+    private static boolean multipartentities$cancelRenderHitbox$prod(Object targetObject, Class<?> classValue) {
         return false;
     }
 
