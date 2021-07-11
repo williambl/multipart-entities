@@ -24,13 +24,13 @@ public class ServerEntityHandlerMixin {
     @SuppressWarnings("ShadowTarget")
     @Shadow ServerWorld field_26936;
 
-    @Redirect(method = "startTracking", at=@At(value = "CONSTANT", args = "classValue=net/minecraft/entity/boss/dragon/EnderDragonEntity", ordinal = 0))
+    @Redirect(method = "Lnet/minecraft/server/world/ServerWorld$ServerEntityHandler;startTracking(Lnet/minecraft/entity/Entity;)V", at=@At(value = "CONSTANT", args = "classValue=net/minecraft/entity/boss/dragon/EnderDragonEntity", ordinal = 0))
     private boolean multipartentities$cancelStartTrackingParts(Object targetObject, Class<?> classValue) {
         return false;
     }
 
 
-    @Inject(method = "startTracking", at=@At("TAIL"))
+    @Inject(method = "Lnet/minecraft/server/world/ServerWorld$ServerEntityHandler;startTracking(Lnet/minecraft/entity/Entity;)V", at=@At("TAIL"))
     private void multipartentities$startTrackingParts(Entity entity, CallbackInfo ci) {
         if (entity instanceof MultipartEntity mpE) {
             PartEntity<?>[] parts = mpE.getParts();
@@ -41,13 +41,13 @@ public class ServerEntityHandlerMixin {
         }
     }
 
-    @Redirect(method = "stopTracking", at=@At(value = "CONSTANT", args = "classValue=net/minecraft/entity/boss/dragon/EnderDragonEntity", ordinal = 0))
+    @Redirect(method = "Lnet/minecraft/server/world/ServerWorld$ServerEntityHandler;stopTracking(Lnet/minecraft/entity/Entity;)V", at=@At(value = "CONSTANT", args = "classValue=net/minecraft/entity/boss/dragon/EnderDragonEntity", ordinal = 0))
     private boolean multipartentities$cancelStopTrackingParts(Object targetObject, Class<?> classValue) {
         return false;
     }
 
 
-    @Inject(method = "stopTracking", at=@At("TAIL"))
+    @Inject(method = "Lnet/minecraft/server/world/ServerWorld$ServerEntityHandler;stopTracking(Lnet/minecraft/entity/Entity;)V", at=@At("TAIL"))
     private void multipartentities$stopTrackingParts(Entity entity, CallbackInfo ci) {
         if (entity instanceof MultipartEntity mpE) {
             PartEntity<?>[] parts = mpE.getParts();

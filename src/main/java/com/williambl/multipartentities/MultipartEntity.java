@@ -19,8 +19,17 @@
 
 package com.williambl.multipartentities;
 
-import org.jetbrains.annotations.Nullable;
+import net.minecraft.network.packet.s2c.play.EntitySpawnS2CPacket;
 
+/**
+ * An entity with sub-entities, known as 'parts'.
+ *
+ * Part entities are an extension of Vanilla's system for ender dragon part entities. These entities are not saved,
+ * ticked, or handled like regular entities.
+ *
+ * Because they are not synced from server->client, they will have different entity IDs on both sides. See
+ * {@link net.minecraft.entity.boss.dragon.EnderDragonEntity#onSpawnPacket(EntitySpawnS2CPacket)} for how to fix this.
+ */
 public interface MultipartEntity {
     /**
      * Gets the individual sub parts that make up this entity.
