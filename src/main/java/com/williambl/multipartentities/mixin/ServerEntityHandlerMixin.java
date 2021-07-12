@@ -15,6 +15,7 @@ import net.minecraft.util.math.MathHelper;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Group;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -24,8 +25,15 @@ public class ServerEntityHandlerMixin {
     @SuppressWarnings("ShadowTarget")
     @Shadow ServerWorld field_26936;
 
+    @Group(name = "multipartentities$cancelStartTrackingParts")
     @Redirect(method = "Lnet/minecraft/server/world/ServerWorld$ServerEntityHandler;startTracking(Lnet/minecraft/entity/Entity;)V", at=@At(value = "CONSTANT", args = "classValue=net/minecraft/entity/boss/dragon/EnderDragonEntity", ordinal = 0))
-    private boolean multipartentities$cancelStartTrackingParts(Object targetObject, Class<?> classValue) {
+    private boolean multipartentities$cancelStartTrackingParts$dev(Object targetObject, Class<?> classValue) {
+        return false;
+    }
+
+    @Group(name = "multipartentities$cancelStartTrackingParts")
+    @Redirect(method = "Lnet/minecraft/server/world/ServerWorld$ServerEntityHandler;startTracking(Lnet/minecraft/entity/Entity;)V", at=@At(value = "CONSTANT", args = "classValue=net/minecraft/class_1510", ordinal = 0))
+    private boolean multipartentities$cancelStartTrackingParts$prod(Object targetObject, Class<?> classValue) {
         return false;
     }
 
@@ -41,8 +49,15 @@ public class ServerEntityHandlerMixin {
         }
     }
 
+    @Group(name = "multipartentities$cancelStopTrackingParts")
     @Redirect(method = "Lnet/minecraft/server/world/ServerWorld$ServerEntityHandler;stopTracking(Lnet/minecraft/entity/Entity;)V", at=@At(value = "CONSTANT", args = "classValue=net/minecraft/entity/boss/dragon/EnderDragonEntity", ordinal = 0))
-    private boolean multipartentities$cancelStopTrackingParts(Object targetObject, Class<?> classValue) {
+    private boolean multipartentities$cancelStopTrackingParts$dev(Object targetObject, Class<?> classValue) {
+        return false;
+    }
+
+    @Group(name = "multipartentities$cancelStopTrackingParts")
+    @Redirect(method = "Lnet/minecraft/server/world/ServerWorld$ServerEntityHandler;stopTracking(Lnet/minecraft/entity/Entity;)V", at=@At(value = "CONSTANT", args = "classValue=net/minecraft/class_1510", ordinal = 0))
+    private boolean multipartentities$cancelStopTrackingParts$prod(Object targetObject, Class<?> classValue) {
         return false;
     }
 
